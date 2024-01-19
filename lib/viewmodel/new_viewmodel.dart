@@ -14,6 +14,7 @@ class NewsViewModel with ChangeNotifier{
 
   Future<void> fetchNews() async{
     isLoading = true;
+    notifyListeners();
     var response = await newsRepository.fetchNews();
     articles = response.articles!;
     isLoading = false;

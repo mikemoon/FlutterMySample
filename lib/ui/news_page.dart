@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ibook/model/news/articles.dart';
-import 'package:ibook/model/news/newsdata.dart';
 import 'package:ibook/viewmodel/new_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class NewsPage extends StatefulWidget{
   final NewsViewModel newsViewModel;
@@ -18,19 +16,25 @@ class NewsPage extends StatefulWidget{
   NewsPageState createState() => NewsPageState();
 }
 
-class NewsPageState extends State<NewsPage>{
+class NewsPageState extends State<NewsPage> with WidgetsBindingObserver{
   var isItemSelect = false;
   dynamic webViewController;
 
   @override
   void initState() {
-    widget.newsViewModel.fetchNews();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    widget.newsViewModel.fetchNews();
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    widget.newsViewModel.fetchNews();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Builder(builder: (context){
       if(isItemSelect){
         return PopScope(
@@ -71,7 +75,11 @@ class NewsPageState extends State<NewsPage>{
     },);
   }
 
-
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   Widget newsItem(Articles news){
     return GestureDetector(
