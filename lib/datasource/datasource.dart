@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:ibook/model/news/newsdata.dart';
 import 'package:ibook/model/youtube/youtubeInfo.dart';
 import 'package:http/http.dart' as http;
+import 'package:ibook/util/secretloader.dart';
 
 class DataSource{
 
   Future<YoutubeInfo> fetchYoutubeList(String pageToken) async {
+    var youtubeApiKey = await SecretLoader(secretPath: "assets/secrets.json").loadYoutubeApiKey();
     final response = await http.get(Uri.parse(
-        'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&pageToken=$pageToken&maxResults=5&key=AIzaSyBCw08IB3tvHJcmNwH55RUxl9jIoOyg6m4'));
+        'https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&pageToken=$pageToken&maxResults=5&key=${youtubeApiKey.apiKey}'));
 
     if (response.statusCode == 200) {
       print("fetchYoutubeList success");

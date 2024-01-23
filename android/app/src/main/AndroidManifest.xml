@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
     <application
-        android:label="ibook"
+        android:label="MyFlutterSample"
         android:name="${applicationName}"
         android:networkSecurityConfig="@xml/network_security"
         android:usesCleartextTraffic="true"
@@ -51,7 +51,7 @@
             android:value="2" />
 
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA1Q4B0xdUyi5wBWpZ1M4Pycls2bnvWBVA"/>
+            android:value="@string/googleMapApiKey"/>
 
     </application>
 
